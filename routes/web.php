@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,20 +15,42 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $folderPath = 'C:\Users\User\Desktop\DUET\First_Part';
+    $imageCount = 0;
+    $completedPercent = 0;
 
-    if (!File::exists($folderPath)) {
-        $imageCount = 0;
-    } else {
-        $files = File::files($folderPath);
+    if (Auth::check()) {
+        $email = Auth::user()->email;
 
-        $imageCount = collect($files)->filter(function ($file) {
-            return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']);
-        })->count();
+        if ($email === 'ictcell@duet.ac.bd') {
+            $folderPath = 'C:/Users/User/Desktop/DUET/First_Part';
+
+            if (File::exists($folderPath)) {
+                $files = File::files($folderPath);
+                $imageCount = collect($files)->filter(function ($file) {
+                    return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']);
+                })->count();
+            }
+
+            $completedPercent = 10;
+
+        } elseif ($email === 'scrutizer@duet.ac.bd') {
+            // Different logic for scrutizer
+            $folderPath = 'C:/Users/User/Desktop/DUET/Scrutizer_Folder';
+
+            if (File::exists($folderPath)) {
+                $files = File::files($folderPath);
+                $imageCount = collect($files)->filter(function ($file) {
+                    return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']);
+                })->count();
+            }
+
+            $completedPercent = 25; // example for scrutizer
+        }
     }
+
     return view('index', [
         'imageCount' => $imageCount,
-        'completedPercent' => 10, // or calculated value
+        'completedPercent' => $completedPercent,
     ]);
 
 
@@ -38,4 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::middleware('auth')->group(function () {
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/user/logout', 'UserDestroy')->name('user.logout');
+    });
+});
 require __DIR__.'/auth.php';

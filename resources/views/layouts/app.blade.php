@@ -3,7 +3,7 @@
 <head>
     <!-- Basic -->
     <meta charset="UTF-8">
-    <title>Architecture Exam bill</title>
+    <title>Admission Result</title>
     <meta name="keywords" content="HTML5 Admin Template" />
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">

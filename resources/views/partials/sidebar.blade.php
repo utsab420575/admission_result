@@ -23,14 +23,14 @@
                         </a>
                     </li>
 
-                    {{-- Dashboard --}}
+                   {{-- --}}{{-- Dashboard --}}{{--
                     <li>
                         <a class="nav-link" href="{{ route('dashboard') }}">
                             <i class="bx bx-home-alt" aria-hidden="true"></i>
                             <span>Dashboard 2</span>
                         </a>
                     </li>
-
+--}}
 
 
 
