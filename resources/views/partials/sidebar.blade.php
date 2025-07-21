@@ -19,7 +19,7 @@
                     <li>
                         <a class="nav-link" href="{{ route('dashboard') }}">
                             <i class="bx bx-home-alt" aria-hidden="true"></i>
-                            <span>Dashboard 1</span>
+                            <span>Dashboard</span>
                         </a>
                     </li>
 

@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ExaminerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScrutinizerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,7 +25,7 @@ Route::get('/dashboard', function () {
         $email = Auth::user()->email;
 
         if ($email === 'ictcell@duet.ac.bd') {
-            $folderPath = 'C:/Users/User/Desktop/DUET/First_Part';
+            $folderPath = public_path('image_upload/First_Part');
 
             if (File::exists($folderPath)) {
                 $files = File::files($folderPath);
@@ -34,8 +37,8 @@ Route::get('/dashboard', function () {
             $completedPercent = 10;
 
         } elseif ($email === 'scrutizer@duet.ac.bd') {
-            // Different logic for scrutizer
-            $folderPath = 'C:/Users/User/Desktop/DUET/Scrutizer_Folder';
+            /*$folderPath = public_path('image_upload/Scrutizer_Folder');*/
+            $folderPath = public_path('image_upload/First_Part');
 
             if (File::exists($folderPath)) {
                 $files = File::files($folderPath);
@@ -44,7 +47,7 @@ Route::get('/dashboard', function () {
                 })->count();
             }
 
-            $completedPercent = 25; // example for scrutizer
+            $completedPercent = 25;
         }
     }
 
@@ -67,5 +70,14 @@ Route::middleware('auth')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('/user/logout', 'UserDestroy')->name('user.logout');
     });
+
+    Route::controller(ExaminerController::class)->group(function () {
+        Route::get('/examiner/mark/entry', 'ExaminerMarkEntry')->name('examiner.mark.entry');
+    });
+
+    Route::controller(ScrutinizerController::class)->group(function () {
+        Route::get('/scrutinizer/mark/review', 'ScrutinizerMarkReview')->name('scrutinizer.mark.review');
+    });
+
 });
 require __DIR__.'/auth.php';

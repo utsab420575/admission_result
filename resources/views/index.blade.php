@@ -99,14 +99,30 @@
 
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4 text-center">
-                <button class="btn btn-primary px-5 py-4 fs-4">
-                    Start Execution <i class="fas fa-arrow-right ms-2"></i>
-                </button>
-            </div>
-            <div class="col-md-4"></div>
 
+            <div class="col-md-4 text-center">
+                @php
+                    $email = Auth::check() ? Auth::user()->email : null;
+                @endphp
+
+                @if ($email === 'ictcell@duet.ac.bd')
+                    <a href="{{ route('examiner.mark.entry') }}" class="btn btn-primary px-5 py-4 fs-4">
+                        Start Execution <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                @elseif ($email === 'scrutizer@duet.ac.bd')
+                    <a href="{{ route('scrutinizer.mark.review') }}" class="btn btn-primary px-5 py-4 fs-4">
+                        Start Execution <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                @else
+                    <button class="btn btn-secondary px-5 py-4 fs-4" disabled>
+                        Access Denied
+                    </button>
+                @endif
+            </div>
+
+            <div class="col-md-4"></div>
         </div>
+
 
         <!-- end: page -->
     </section>
